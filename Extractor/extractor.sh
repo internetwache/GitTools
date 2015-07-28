@@ -18,20 +18,19 @@ if [ ! -d "$2" ]; then
     mkdir "$2"
 fi
 
-COMMITCOUNT=0;
-
 function traverse_tree() {
 	local tree=$1
 	local path=$2
 	
+    #Read blobs/tree information from root tree
 	git ls-tree $tree |
 	while read leaf; do
 		type=$(echo $leaf | grep -oP "^\d+\s+\K\w{4}");
 		hash=$(echo $leaf | grep -oP "^\d+\s+\w{4}\s+\K\w{40}");
 		name=$(echo $leaf | grep -oP "^\d+\s+\w{4}\s+\w{40}\s+\K.*");
 		
+        # Get the blob data 
 		git cat-file -e $hash;
-		
 		#Ignore invalid git objects (e.g. ones that are missing)
 		if [ $? -ne 0 ]; then
 			continue;
@@ -43,7 +42,7 @@ function traverse_tree() {
 		else
 			echo "Found folder: $path/$name"
 			mkdir -p "$path/$name";
-			
+			#Recursively traverse sub trees
 			traverse_tree $hash "$path/$name";
 		fi
 		
@@ -55,22 +54,29 @@ function traverse_commit() {
 	local commit=$2
 	local count=$3
 	
+    #Create folder for commit data
 	echo "Found commit: $commit";
 	path="$base/$count-$commit"
 	mkdir -p $path;
-	
+    #Add meta information
+	git cat-file -p "$commit" > "$path/commit-meta.txt"
+    #Try to extract contents of root tree
 	traverse_tree $commit $path
 }
 
+#Current directory as we'll switch into others and need to restore it.
 OLDDIR=$(pwd)
 TARGETDIR=$2
+COMMITCOUNT=0;
 
+#If we don't have an absolute path, add the prepend the CWD
 if [ "${TARGETDIR:0:1}" != "/" ]; then
 	TARGETDIR="$OLDDIR/$2"
 fi
 
 cd $1
 
+#Extract all object hashes
 find ".git/objects" -type f | 
 	sed -e "s/\///g" |
 	sed -e "s/\.gitobjects//g" |
@@ -78,6 +84,7 @@ find ".git/objects" -type f |
 	
 	type=$(git cat-file -t $object)
 	
+    # Only analyse commit objects
 	if [ "$type" = "commit" ]; then
 		CURDIR=$(pwd)
 		traverse_commit "$TARGETDIR" $object $COMMITCOUNT

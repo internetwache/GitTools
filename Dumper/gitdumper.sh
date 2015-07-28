@@ -26,6 +26,7 @@ fi
 
 
 function start_download() {
+    #Add initial/static git files
     QUEUE+=('HEAD')
     QUEUE+=('objects/info/packs')
     QUEUE+=('description')
@@ -42,9 +43,11 @@ function start_download() {
     QUEUE+=('info/refs')
     QUEUE+=('info/exclude')
 
+    #Iterate through QUEUE until there are no more files to download
     while [ ${#QUEUE[*]} -gt 0 ]
     do
         download_item ${QUEUE[@]:0:1}
+        #Remove item from QUEUE
         QUEUE=( "${QUEUE[@]:1}" )
     done
 }
@@ -99,13 +102,14 @@ function download_item() {
 		cd "$cwd"
 	fi 
 	
-    #Parse file
+    #Parse file for other objects
     hashes+=($(cat "$target" | grep -oP "([a-f0-9]{40})"))
     for hash in ${hashes[*]}
     do
         QUEUE+=("objects/${hash:0:2}/${hash:2}")
     done
 
+    #Parse file for packs
     packs+=($(cat "$target" | grep -oP "(pack\-[a-f0-9]{40})"))
     for pack in ${packs[*]}
     do 

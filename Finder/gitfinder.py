@@ -7,13 +7,15 @@ def findgitrepo(domain):
     domain = domain.strip()
     
     try:
-    
+        # Try to download http://target.tld/.git/HEAD
         req = urlopen('http://' + domain + "/.git/HEAD")
         answer = req.read(200).decode()
         
+        # Check if refs/heads is in the file
         if(not 'refs/heads' in answer):
             return
         
+        # Write match to OUTPUTFILE
         fHandle = open(OUTPUTFILE,'a')
         fHandle.write(domain + "\n")
         fHandle.close()
@@ -25,10 +27,7 @@ def findgitrepo(domain):
 
 if __name__ == '__main__':
 
-    def usage():
-        print('USAGE: gitfinder.py -i <inputfile> -o <outputfile> -t <threads>')
-        sys.exit(1)
-
+    # Parse arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--inputfile', default='domains.txt', help='input file')
     parser.add_argument('-o', '--outputfile', default='output.txt', help='output file')
