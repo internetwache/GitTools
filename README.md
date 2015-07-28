@@ -14,3 +14,9 @@ This tool can be used to download as much as possible from the found .git reposi
 # Extractor
 
 A small bash script to extract commits and their content from a broken repository.
+
+# Demo
+
+Here's a small demo of the **Dumper** tool:
+
+[![asciicast](https://asciinema.org/a/24072.png)](https://asciinema.org/a/24072)
