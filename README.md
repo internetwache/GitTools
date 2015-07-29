@@ -12,7 +12,7 @@ This python script identifies websites with publicly accessible ```.git``` repos
 It checks if the ```.git/HEAD``` file contains ```refs/heads```.
 
 ```
-> python gitfinder.py -h
+./gitfinder.py -h
 usage: gitfinder.py [-h] [-i INPUTFILE] [-o OUTPUTFILE] [-t THREADS]
 
 optional arguments:
@@ -36,7 +36,7 @@ This tool can be used to download as much as possible from the found .git reposi
 ###Usage
 
 ```
-bash http://target.tld/.git/ dest-dir
+./gitdumper.sh http://target.tld/.git/ dest-dir
 ```
 
 Note: This tool has no 100% guaranty to completely recover the .git repository. Especially if the repository has been compressed into ```pack```-files, it may fail.
@@ -55,7 +55,7 @@ This script tries to recover incomplete git repositories:
 # Usage
 
 ```
-bash extractor.sh /tmp/mygitrepo /tmp/mygitrepodump
+./extractor.sh /tmp/mygitrepo /tmp/mygitrepodump
 ```
 where
 - ```/tmp/mygitrepo``` contains a ```.git``` directory
