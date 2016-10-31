@@ -11,7 +11,7 @@ This is a tool for downloading .git repositories from webservers which do not ha
 #Usage
 
 ```
-bash http://target.tld/.git/ dest-dir
+bash gitdumper.sh http://target.tld/.git/ dest-dir
 ```
 
 Note: This tool has no 100% guaranty to completely recover the .git repository. Especially if the repository has been compressed into ```pack```-files, it may fail.
