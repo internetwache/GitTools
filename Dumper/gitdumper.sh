@@ -72,7 +72,7 @@ function download_item() {
     fi
 
     #Download file
-    curl -s "$url" > "$target"
+    curl -k -s "$url" > "$target"
     
     #Mark as downloaded and remove it from the queue
     DOWNLOADED+=("$objname")
