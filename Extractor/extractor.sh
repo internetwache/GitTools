@@ -25,9 +25,9 @@ function traverse_tree() {
     #Read blobs/tree information from root tree
 	git ls-tree $tree |
 	while read leaf; do
-		type=$(echo $leaf | grep -oP "^\d+\s+\K\w{4}");
-		hash=$(echo $leaf | grep -oP "^\d+\s+\w{4}\s+\K\w{40}");
-		name=$(echo $leaf | grep -oP "^\d+\s+\w{4}\s+\w{40}\s+\K.*");
+		type=$(echo $leaf | grep -oE "^\d+\s+\K\w{4}");
+		hash=$(echo $leaf | grep -oE "^\d+\s+\w{4}\s+\K\w{40}");
+		name=$(echo $leaf | grep -oE "^\d+\s+\w{4}\s+\w{40}\s+\K.*");
 		
         # Get the blob data 
 		git cat-file -e $hash;
