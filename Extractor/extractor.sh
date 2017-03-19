@@ -1,20 +1,34 @@
 #!/bin/bash
 #$1 : Folder containing .git directory to scan
 #$2 : Folder to put files to
+function init_header() {
+    cat <<EOF
+###########
+# Extractor is part of https://github.com/internetwache/GitTools
+#
+# Developed and maintained by @gehaxelt from @internetwache
+#
+# Use at your own risk. Usage might be illegal in certain circumstances. 
+# Only for educational purposes!
+###########
+EOF
+}
+
+init_header
 
 if [ $# -ne 2 ]; then
-	echo "USAGE: extractor.sh GIT-DIR DEST-DIR";
+	echo -e "\e[33m[*] USAGE: extractor.sh GIT-DIR DEST-DIR\e[0m";
 	exit 1;
 fi
 
 if [ ! -d "$1/.git" ]; then
-	echo "There's no .git folder";
+	echo -e "\e[31m[-] There's no .git folder\e[0m";
 	exit 1;
 fi
 
 if [ ! -d "$2" ]; then
-	echo "Destination folder does not exist";
-    echo "Creating..."
+	echo -e "\e[33m[*] Destination folder does not exist\e[0m";
+    echo -e "\e[32m[*] Creating...\e[0m"
     mkdir "$2"
 fi
 
@@ -37,10 +51,10 @@ function traverse_tree() {
 		fi	
 		
 		if [ "$type" = "blob" ]; then
-			echo "Found file: $path/$name"
+			echo -e "\e[32m[+] Found file: $path/$name\e[0m"
 			git cat-file -p $hash > "$path/$name"
 		else
-			echo "Found folder: $path/$name"
+			echo -e "\e[32m[+] Found folder: $path/$name\e[0m"
 			mkdir -p "$path/$name";
 			#Recursively traverse sub trees
 			traverse_tree $hash "$path/$name";
@@ -55,7 +69,7 @@ function traverse_commit() {
 	local count=$3
 	
     #Create folder for commit data
-	echo "Found commit: $commit";
+	echo -e "\e[32m[+] Found commit: $commit\e[0m";
 	path="$base/$count-$commit"
 	mkdir -p $path;
     #Add meta information
@@ -96,5 +110,3 @@ find ".git/objects" -type f |
 	done;
 
 cd $OLDDIR;
-
-echo "Finished";

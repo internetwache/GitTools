@@ -26,7 +26,16 @@ def findgitrepo(domain):
         return 
 
 if __name__ == '__main__':
-
+    print("""
+###########
+# Finder is part of https://github.com/internetwache/GitTools
+#
+# Developed and maintained by @gehaxelt from @internetwache
+#
+# Use at your own risk. Usage might be illegal in certain circumstances. 
+# Only for educational purposes!
+###########
+        """)
     # Parse arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--inputfile', default='domains.txt', help='input file')
