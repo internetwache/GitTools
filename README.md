@@ -77,3 +77,7 @@ Here's a small demo of the **Dumper** tool:
 * curl
 * bash
 * sed
+
+# License
+
+All tools are licensed using the MIT license. See LICENSE.md
