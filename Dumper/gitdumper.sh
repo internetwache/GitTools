@@ -1,6 +1,23 @@
 #!/bin/bash
 #$1 : URL to download .git from (http://target.com/.git/)
 #$2 : Folder where the .git-directory will be created
+
+function init_header() {
+    cat <<EOF
+###########
+# GitDumper is part of https://github.com/internetwache/GitTools
+#
+# Developed and maintained by @gehaxelt from @internetwache
+#
+# Use at your own risk. Usage might be illegal in certain circumstances. 
+# Only for educational purposes!
+###########
+EOF
+}
+
+init_header
+
+
 QUEUE=();
 DOWNLOADED=();
 BASEURL="$1";
@@ -8,19 +25,19 @@ BASEDIR="$2";
 BASEGITDIR="$BASEDIR/.git/";
 
 if [ $# -ne 2 ]; then
-    echo "USAGE: http://target.tld/.git/ dest-dir";
+    echo -e "\e[33m[*] USAGE: http://target.tld/.git/ dest-dir\e[0m";
     exit 1;
 fi
 
 
 if [[ ! "$BASEURL" =~ /.git/$ ]]; then
-    echo "/.git/ missing in url";
+    echo -e "\e[31m[-] /.git/ missing in url\e[0m";
     exit 0;
 fi
 
 if [ ! -d "$BASEGITDIR" ]; then
-    echo "Destination folder does not exist";
-    echo "Creating $BASEGITDIR";
+    echo -e "\e[33m[*] Destination folder does not exist\e[0m";
+    echo -e "\e[32m[+] Creating $BASEGITDIR\e[0m";
     mkdir -p "$BASEGITDIR";
 fi
 
@@ -72,50 +89,59 @@ function download_item() {
     fi
 
     #Download file
-    curl -k -s "$url" > "$target"
+    curl -f -k -s "$url" -o "$target"
     
     #Mark as downloaded and remove it from the queue
     DOWNLOADED+=("$objname")
-	echo "Downloaded: $objname"
-	
-	#Check if we have an object hash
-	if [[ "$objname" =~ /[a-f0-9]{2}/[a-f0-9]{38} ]]; then 
-		#Switch into $BASEDIR and save current working directory
-		cwd=$(pwd)
-		cd "$BASEDIR"
-		
-		#Restore hash from $objectname
-		hash=$(echo "$objname" | sed -e 's~objects~~g' | sed -e 's~/~~g')
-		
-		#Check if it's valid git object
-		git cat-file -t "$hash" &> /dev/null
-		if [ $? -ne 0 ]; then
-			#Delete invalid file
-			cd "$cwd"
-			rm "$target"
-			return 
-		fi
-		
-		#Parse output of git cat-file -p $hash
- 		hashes+=($(git cat-file -p "$hash" | grep -oE "([a-f0-9]{40})"))
+    if [ ! -f "$target" ]; then
+        echo -e "\e[31m[-] Downloaded: $objname\e[0m"
+        return
+    fi
+    echo -e "\e[32m[+] Downloaded: $objname\e[0m"
 
-		cd "$cwd"
-	fi 
-	
+    #Check if we have an object hash
+    if [[ "$objname" =~ /[a-f0-9]{2}/[a-f0-9]{38} ]]; then 
+        #Switch into $BASEDIR and save current working directory
+        cwd=$(pwd)
+        cd "$BASEDIR"
+        
+        #Restore hash from $objectname
+        hash=$(echo "$objname" | sed -e 's~objects~~g' | sed -e 's~/~~g')
+        
+        #Check if it's valid git object
+        type=$(git cat-file -t "$hash" 2> /dev/null)
+        if [ $? -ne 0 ]; then
+            #Delete invalid file
+            cd "$cwd"
+            rm "$target"
+            return 
+        fi
+        
+        #Parse output of git cat-file -p $hash. Use strings for blobs
+        if [[ "$type" != "blob" ]]; then
+            hashes+=($(git cat-file -p "$hash" | grep -oE "([a-f0-9]{40})"))
+        else
+            hashes+=($(git cat-file -p "$hash" | strings -a | grep -oE "([a-f0-9]{40})"))
+        fi
+
+        cd "$cwd"
+    fi 
+    
     #Parse file for other objects
-    hashes+=($(cat "$target" | grep -oE "([a-f0-9]{40})"))
+    hashes+=($(cat "$target" | strings -a | grep -oE "([a-f0-9]{40})"))
     for hash in ${hashes[*]}
     do
         QUEUE+=("objects/${hash:0:2}/${hash:2}")
     done
 
     #Parse file for packs
-    packs+=($(cat "$target" | grep -oE "(pack\-[a-f0-9]{40})"))
+    packs+=($(cat "$target" | strings -a | grep -oE "(pack\-[a-f0-9]{40})"))
     for pack in ${packs[*]}
     do 
         QUEUE+=("objects/pack/$pack.pack")
         QUEUE+=("objects/pack/$pack.idx")
     done
 }
+
 
 start_download
