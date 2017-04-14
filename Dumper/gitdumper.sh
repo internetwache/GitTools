@@ -89,7 +89,7 @@ function download_item() {
     fi
 
     #Download file
-    curl -f -k -s "$url" -o "$target"
+    curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36" -f -k -s "$url" -o "$target"
     
     #Mark as downloaded and remove it from the queue
     DOWNLOADED+=("$objname")
