@@ -2,13 +2,13 @@ GitDumper
 =================
 This is a tool for downloading .git repositories from webservers which do not have directory listing enabled. 
 
-#Requirements
+# Requirements
 - git
 - curl
 - bash
 - sed
 
-#Usage
+# Usage
 
 ```
 bash gitdumper.sh http://target.tld/.git/ dest-dir
