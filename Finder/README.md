@@ -3,7 +3,7 @@ GitFinder
 This python script identifies websites with publicly accessible ```.git``` repositories. 
 It checks if the ```.git/HEAD``` file contains ```refs/heads```. 
 
-#Usage
+# Usage
 
 ```
 > python gitfinder.py -h

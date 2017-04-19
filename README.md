@@ -6,7 +6,7 @@ This repository contains three small python/bash scripts used for the Git resear
 
 You can use this tool to find websites with their .git repository available to the public
 
-###Usage
+### Usage
 
 This python script identifies websites with publicly accessible ```.git``` repositories.
 It checks if the ```.git/HEAD``` file contains ```refs/heads```.
@@ -33,7 +33,7 @@ The script will output discovered domains in the form of ```[*] Found: DOMAIN```
 
 This tool can be used to download as much as possible from the found .git repository from webservers which do not have directory listing enabled.
 
-###Usage
+### Usage
 
 ```
 ./gitdumper.sh http://target.tld/.git/ dest-dir
