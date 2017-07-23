@@ -12,7 +12,28 @@ function init_header() {
 # Use at your own risk. Usage might be illegal in certain circumstances. 
 # Only for educational purposes!
 ###########
+
+
 EOF
+}
+
+# get_arg "--git-dir=" ".git" "GITDIR" "$@" for "--git-dir=asd"
+# returns asd in GITDIR
+function get_arg() {
+    local KEY=$1
+    local DEFAULT=$2
+    declare -n ret=$3
+    local ARGS=${@:4}
+
+    for arg in $ARGS
+    do
+        if [[ $arg == $KEY* ]]; then
+            ret="${arg#$KEY}"
+            return
+        fi
+    done
+
+   ret="$DEFAULT"
 }
 
 init_header
@@ -22,16 +43,18 @@ QUEUE=();
 DOWNLOADED=();
 BASEURL="$1";
 BASEDIR="$2";
-BASEGITDIR="$BASEDIR/.git/";
+get_arg "--git-dir=" ".git" "GITDIR" "$@"
+BASEGITDIR="$BASEDIR/$GITDIR/";
 
-if [ $# -ne 2 ]; then
-    echo -e "\e[33m[*] USAGE: http://target.tld/.git/ dest-dir\e[0m";
+if [ $# -lt 2 ]; then
+    echo -e "\e[33m[*] USAGE: http://target.tld/.git/ dest-dir [--git-dir=otherdir]\e[0m";
+    echo -e "\t\t--git-dir=otherdir\t\tChange the git folder name. Default: .git"
     exit 1;
 fi
 
 
-if [[ ! "$BASEURL" =~ /.git/$ ]]; then
-    echo -e "\e[31m[-] /.git/ missing in url\e[0m";
+if [[ ! "$BASEURL" =~ /$GITDIR/$ ]]; then
+    echo -e "\e[31m[-] /$GITDIR/ missing in url\e[0m";
     exit 0;
 fi
 
