@@ -55,7 +55,11 @@ This script tries to recover incomplete git repositories:
 # Usage
 
 ```
-./extractor.sh /tmp/mygitrepo /tmp/mygitrepodump
+./gitdumper.sh -h
+
+[*] USAGE: http://target.tld/.git/ dest-dir [--git-dir=otherdir]
+		--git-dir=otherdir		Change the git folder name. Default: .git
+
 ```
 where
 - ```/tmp/mygitrepo``` contains a ```.git``` directory
