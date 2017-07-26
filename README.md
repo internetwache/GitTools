@@ -36,7 +36,11 @@ This tool can be used to download as much as possible from the found .git reposi
 ### Usage
 
 ```
-./gitdumper.sh http://target.tld/.git/ dest-dir
+./gitdumper.sh -h
+
+[*] USAGE: http://target.tld/.git/ dest-dir [--git-dir=otherdir]
+		--git-dir=otherdir		Change the git folder name. Default: .git
+
 ```
 
 Note: This tool has no 100% guaranty to completely recover the .git repository. Especially if the repository has been compressed into ```pack```-files, it may fail.
@@ -52,7 +56,7 @@ This script tries to recover incomplete git repositories:
 - Try to restore the contents of the commit
 - Commits are *not* sorted by date
 
-# Usage
+### Usage
 
 ```
 ./extractor.sh /tmp/mygitrepo /tmp/mygitrepodump
