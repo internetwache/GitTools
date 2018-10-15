@@ -47,20 +47,20 @@ get_arg "--git-dir=" ".git" "GITDIR" "$@"
 BASEGITDIR="$BASEDIR/$GITDIR/";
 
 if [ $# -lt 2 ]; then
-    echo -e "\e[33m[*] USAGE: http://target.tld/.git/ dest-dir [--git-dir=otherdir]\e[0m";
+    echo -e "\033[33m[*] USAGE: http://target.tld/.git/ dest-dir [--git-dir=otherdir]\033[0m";
     echo -e "\t\t--git-dir=otherdir\t\tChange the git folder name. Default: .git"
     exit 1;
 fi
 
 
 if [[ ! "$BASEURL" =~ /$GITDIR/$ ]]; then
-    echo -e "\e[31m[-] /$GITDIR/ missing in url\e[0m";
+    echo -e "\033[31m[-] /$GITDIR/ missing in url\033[0m";
     exit 0;
 fi
 
 if [ ! -d "$BASEGITDIR" ]; then
-    echo -e "\e[33m[*] Destination folder does not exist\e[0m";
-    echo -e "\e[32m[+] Creating $BASEGITDIR\e[0m";
+    echo -e "\033[33m[*] Destination folder does not exist\033[0m";
+    echo -e "\033[32m[+] Creating $BASEGITDIR\033[0m";
     mkdir -p "$BASEGITDIR";
 fi
 
@@ -117,10 +117,10 @@ function download_item() {
     #Mark as downloaded and remove it from the queue
     DOWNLOADED+=("$objname")
     if [ ! -f "$target" ]; then
-        echo -e "\e[31m[-] Downloaded: $objname\e[0m"
+        echo -e "\033[31m[-] Downloaded: $objname\033[0m"
         return
     fi
-    echo -e "\e[32m[+] Downloaded: $objname\e[0m"
+    echo -e "\033[32m[+] Downloaded: $objname\033[0m"
 
     #Check if we have an object hash
     if [[ "$objname" =~ /[a-f0-9]{2}/[a-f0-9]{38} ]]; then 
