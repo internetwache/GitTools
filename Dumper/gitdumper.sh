@@ -17,23 +17,21 @@ function init_header() {
 EOF
 }
 
-# get_arg "--git-dir=" ".git" "GITDIR" "$@" for "--git-dir=asd"
+# get_git_dir "$@" for "--git-dir=asd"
 # returns asd in GITDIR
-function get_arg() {
-    local KEY=$1
-    local DEFAULT=$2
-    declare -n ret=$3
-    local ARGS=${@:4}
+function get_git_dir() {
+    local FLAG="--git-dir="
+    local ARGS=${@}
 
     for arg in $ARGS
     do
-        if [[ $arg == $KEY* ]]; then
-            ret="${arg#$KEY}"
+        if [[ $arg == $FLAG* ]]; then
+            echo "${arg#$FLAG}"
             return
         fi
     done
 
-   ret="$DEFAULT"
+    echo ".git"
 }
 
 init_header
@@ -43,7 +41,7 @@ QUEUE=();
 DOWNLOADED=();
 BASEURL="$1";
 BASEDIR="$2";
-get_arg "--git-dir=" ".git" "GITDIR" "$@"
+GITDIR=$(get_git_dir "$@")
 BASEGITDIR="$BASEDIR/$GITDIR/";
 
 if [ $# -lt 2 ]; then
