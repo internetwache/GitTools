@@ -1,3 +1,8 @@
+ [![Rawsec's CyberSecurity Inventory](https://inventory.rawsec.ml/img/badges/Rawsec-inventoried-FF5050_flat.svg)](https://inventory.rawsec.ml/tools.html#GitTools)
+ [![GitHub stars](https://img.shields.io/github/stars/internetwache/GitTools.svg)](https://github.com/internetwache/GitTools/stargazers)
+ [![GitHub license](https://img.shields.io/github/license/internetwache/GitTools.svg)](https://github.com/internetwache/GitTools/blob/master/LICENSE.md)
+ 
+
 # GitTools
 
 This repository contains three small python/bash scripts used for the Git research. [Read about it here](http://en.internetwache.org/dont-publicly-expose-git-or-how-we-downloaded-your-websites-sourcecode-an-analysis-of-alexas-1m-28-07-2015/)
