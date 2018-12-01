@@ -1,12 +1,18 @@
-GitFinder
-==============
-This python script identifies websites with publicly accessible ```.git``` repositories. 
-It checks if the ```.git/HEAD``` file contains ```refs/heads```. 
+# GitFinder
+
+This python script identifies websites with publicly accessible `.git` repositories.
+It checks if the `.git/HEAD` file contains `refs/heads`.
+
+# Setup
+
+```
+> pip3 install -r requirements.txt
+```
 
 # Usage
 
 ```
-> python gitfinder.py -h
+> python3 gitfinder.py -h
 usage: gitfinder.py [-h] [-i INPUTFILE] [-o OUTPUTFILE] [-t THREADS]
 
 optional arguments:
@@ -19,5 +25,5 @@ optional arguments:
                         threads
 ```
 
-The input file should contain the targets one per line. 
-The script will output discovered domains in the form of ```[*] Found: DOMAIN``` to stdout. 
+The input file should contain the targets one per line.
+The script will output discovered domains in the form of `[*] Found: DOMAIN` to stdout.
