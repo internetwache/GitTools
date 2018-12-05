@@ -1,4 +1,3 @@
- [![Rawsec's CyberSecurity Inventory](https://inventory.rawsec.ml/img/badges/Rawsec-inventoried-FF5050_flat.svg)](https://inventory.rawsec.ml/tools.html#GitTools)
  [![GitHub stars](https://img.shields.io/github/stars/internetwache/GitTools.svg)](https://github.com/internetwache/GitTools/stargazers)
  [![GitHub license](https://img.shields.io/github/license/internetwache/GitTools.svg)](https://github.com/internetwache/GitTools/blob/master/LICENSE.md)
  
