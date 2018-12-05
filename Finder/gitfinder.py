@@ -8,7 +8,7 @@ def findgitrepo(domain):
 
     try:
         # Try to download http://target.tld/.git/HEAD
-        req = urlopen('http://' + domain + "/.git/HEAD")
+        req = urlopen('http://' + domain + "/.git/HEAD", timeout=5)
         answer = req.read(200).decode()
 
         # Check if refs/heads is in the file
