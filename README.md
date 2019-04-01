@@ -16,7 +16,7 @@ This python script identifies websites with publicly accessible ```.git``` repos
 It checks if the ```.git/HEAD``` file contains ```refs/heads```.
 
 ```
-$./gitfinder.py -h
+$ ./gitfinder.py -h
 
 ###########
 # Finder is part of https://github.com/internetwache/GitTools
@@ -81,7 +81,7 @@ This script tries to recover incomplete git repositories:
 ### Usage
 
 ```
-./extractor.sh /tmp/mygitrepo /tmp/mygitrepodump
+$ ./extractor.sh /tmp/mygitrepo /tmp/mygitrepodump
 ```
 where
 - ```/tmp/mygitrepo``` contains a ```.git``` directory
@@ -99,7 +99,7 @@ Here's a small demo of the **Dumper** tool:
 
 ## Requirements
 * git
-* python
+* Python 3+
 * curl
 * bash
 * sed
