@@ -4,7 +4,7 @@
 
 # GitTools
 
-This repository contains three small python/bash scripts used for the Git research. [Read about it here](http://en.internetwache.org/dont-publicly-expose-git-or-how-we-downloaded-your-websites-sourcecode-an-analysis-of-alexas-1m-28-07-2015/)
+This repository contains three small python/bash scripts used for the Git research. [Read about it here](https://en.internetwache.org/dont-publicly-expose-git-or-how-we-downloaded-your-websites-sourcecode-an-analysis-of-alexas-1m-28-07-2015/)
 
 ## Finder
 
@@ -16,7 +16,17 @@ This python script identifies websites with publicly accessible ```.git``` repos
 It checks if the ```.git/HEAD``` file contains ```refs/heads```.
 
 ```
-./gitfinder.py -h
+$./gitfinder.py -h
+
+###########
+# Finder is part of https://github.com/internetwache/GitTools
+#
+# Developed and maintained by @gehaxelt from @internetwache
+#
+# Use at your own risk. Usage might be illegal in certain circumstances.
+# Only for educational purposes!
+###########
+
 usage: gitfinder.py [-h] [-i INPUTFILE] [-o OUTPUTFILE] [-t THREADS]
 
 optional arguments:
@@ -38,7 +48,7 @@ The script will output discovered domains in the form of ```[*] Found: DOMAIN```
 wget http://s3.amazonaws.com/alexa-static/top-1m.csv.zip
 unzip top-1m.csv.zip
 sed -i.bak 's/.*,//' top-1m.csv
-python3 ./gitfinder.py -i top-1m.csv
+./gitfinder.py -i top-1m.csv
 ```
 
 ## Dumper
@@ -48,7 +58,7 @@ This tool can be used to download as much as possible from the found .git reposi
 ### Usage
 
 ```
-./gitdumper.sh -h
+$ ./gitdumper.sh -h
 
 [*] USAGE: http://target.tld/.git/ dest-dir [--git-dir=otherdir]
 		--git-dir=otherdir		Change the git folder name. Default: .git
@@ -96,4 +106,4 @@ Here's a small demo of the **Dumper** tool:
 
 # License
 
-All tools are licensed using the MIT license. See LICENSE.md
+All tools are licensed using the MIT license. See [LICENSE.md](LICENSE.md)
