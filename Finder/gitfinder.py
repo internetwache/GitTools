@@ -77,7 +77,7 @@ def main():
     fun = partial(findgitrepo, output_file)
     print("Scanning...")
     with Pool(processes=max_processes) as pool:
-        pool.imap_unordered(fun, domains)
+        pool.map(fun, domains)
     print("Finished")
 
 if __name__ == '__main__':
