@@ -80,6 +80,7 @@ function start_download() {
     QUEUE+=('logs/refs/remotes/origin/HEAD')
     QUEUE+=('info/refs')
     QUEUE+=('info/exclude')
+    QUEUE+=('refs/wip/wtree/refs/heads/master')
 
     #Iterate through QUEUE until there are no more files to download
     while [ ${#QUEUE[*]} -gt 0 ]
