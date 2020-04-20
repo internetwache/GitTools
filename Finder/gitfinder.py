@@ -13,7 +13,7 @@ import argparse
 from functools import partial
 from multiprocessing import Pool
 from urllib.request import urlopen
-from urllib.error import HTTPError
+from urllib.error import HTTPError, URLError
 import sys
 
 
@@ -26,6 +26,8 @@ def findgitrepo(output_file, domains):
             answer = response.read(200).decode('utf-8', 'ignore')
 
     except HTTPError:
+        return
+    except URLError:
         return
 
     # Check if refs/heads is in the file
