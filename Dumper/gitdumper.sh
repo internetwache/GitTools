@@ -9,7 +9,7 @@ function init_header() {
 #
 # Developed and maintained by @gehaxelt from @internetwache
 #
-# Use at your own risk. Usage might be illegal in certain circumstances. 
+# Use at your own risk. Usage might be illegal in certain circumstances.
 # Only for educational purposes!
 ###########
 
@@ -82,6 +82,10 @@ function start_download() {
     QUEUE+=('info/exclude')
     QUEUE+=('refs/wip/wtree/refs/heads/master')
 
+    #Add refs that might be there if the remote uses Magit
+    QUEUE+=('/refs/wip/index/refs/heads/master')
+    QUEUE+=('/refs/wip/wtree/refs/heads/master')
+
     #Iterate through QUEUE until there are no more files to download
     while [ ${#QUEUE[*]} -gt 0 ]
     do
@@ -112,7 +116,7 @@ function download_item() {
 
     #Download file
     curl -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36" -f -k -s "$url" -o "$target"
-    
+
     #Mark as downloaded and remove it from the queue
     DOWNLOADED+=("$objname")
     if [ ! -f "$target" ]; then
@@ -122,23 +126,23 @@ function download_item() {
     echo -e "\033[32m[+] Downloaded: $objname\033[0m"
 
     #Check if we have an object hash
-    if [[ "$objname" =~ /[a-f0-9]{2}/[a-f0-9]{38} ]]; then 
+    if [[ "$objname" =~ /[a-f0-9]{2}/[a-f0-9]{38} ]]; then
         #Switch into $BASEDIR and save current working directory
         cwd=$(pwd)
         cd "$BASEDIR"
-        
+
         #Restore hash from $objectname
         hash=$(echo "$objname" | sed -e 's~objects~~g' | sed -e 's~/~~g')
-        
+
         #Check if it's valid git object
         type=$(git cat-file -t "$hash" 2> /dev/null)
         if [ $? -ne 0 ]; then
             #Delete invalid file
             cd "$cwd"
             rm "$target"
-            return 
+            return
         fi
-        
+
         #Parse output of git cat-file -p $hash. Use strings for blobs
         if [[ "$type" != "blob" ]]; then
             hashes+=($(git cat-file -p "$hash" | grep -oE "([a-f0-9]{40})"))
@@ -147,8 +151,8 @@ function download_item() {
         fi
 
         cd "$cwd"
-    fi 
-    
+    fi
+
     #Parse file for other objects
     hashes+=($(cat "$target" | strings -a | grep -oE "([a-f0-9]{40})"))
     for hash in ${hashes[*]}
@@ -159,7 +163,7 @@ function download_item() {
     #Parse file for packs
     packs+=($(cat "$target" | strings -a | grep -oE "(pack\-[a-f0-9]{40})"))
     for pack in ${packs[*]}
-    do 
+    do
         QUEUE+=("objects/pack/$pack.pack")
         QUEUE+=("objects/pack/$pack.idx")
     done
