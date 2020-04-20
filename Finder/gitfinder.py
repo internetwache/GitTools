@@ -29,6 +29,10 @@ def findgitrepo(output_file, domains):
         return
     except URLError:
         return
+    except ConnectionResetError:
+        return
+    except (KeyboardInterrupt, SystemExit):
+        raise
 
     # Check if refs/heads is in the file
     if 'refs/heads' not in answer:
