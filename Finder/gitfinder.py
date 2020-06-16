@@ -29,6 +29,8 @@ def findgitrepo(output_file, domains):
         return
     except URLError:
         return
+    except OSError:
+        return
     except ConnectionResetError:
         return
     except (KeyboardInterrupt, SystemExit):
