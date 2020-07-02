@@ -15,14 +15,14 @@ from multiprocessing import Pool
 from urllib.request import urlopen
 from urllib.error import HTTPError, URLError
 import sys
-
+import ssl
 
 def findgitrepo(output_file, domains):
     domain = domains.strip()
 
     try:
         # Try to download http://target.tld/.git/HEAD
-        with urlopen(''.join(['http://', domain, '/.git/HEAD']), timeout=5) as response:
+        with urlopen(''.join(['http://', domain, '/.git/HEAD']), context=ssl._create_unverified_context(), timeout=5) as response:
             answer = response.read(200).decode('utf-8', 'ignore')
 
     except HTTPError:
