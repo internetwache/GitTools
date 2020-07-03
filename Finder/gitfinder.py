@@ -34,6 +34,8 @@ def findgitrepo(output_file, domains):
         return
     except ConnectionResetError:
         return
+    except ValueError:
+        return
     except (KeyboardInterrupt, SystemExit):
         raise
 
