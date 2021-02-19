@@ -103,6 +103,7 @@ Here's a small demo of the **Dumper** tool:
 * curl
 * bash
 * sed
+* binutils (strings)
 
 # License
 
