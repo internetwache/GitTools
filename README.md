@@ -96,6 +96,29 @@ Here's a small demo of the **Dumper** tool:
 
 [![asciicast](https://asciinema.org/a/24072.png)](https://asciinema.org/a/24072)
 
+## Proxy support
+
+The `urllib` and `curl` should support proxy configuration through environment variables:
+
+In bash, set:
+
+```
+export HTTP_PROXY=http://proxy_url:proxy_port
+export HTTPS_PROXY=http://proxy_url:proxy_port
+```
+
+In Window's CMD, use:
+
+```
+set HTTP_PROXY=http://proxy_url:proxy_port
+set HTTPS_PROXY=http://proxy_url:proxy_port
+```
+
+Basic auth should be supported with:
+
+```
+http://username:password@proxy_url:proxy_port
+```
 
 ## Requirements
 * git
