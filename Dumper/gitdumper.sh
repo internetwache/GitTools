@@ -34,6 +34,25 @@ function get_git_dir() {
     echo ".git"
 }
 
+# get_no_redirects "$@" for "--no-redirects"
+# returns 0 for true, 1 for false
+function get_no_redirects() {
+    local FLAG="--no-redirects"
+    local ARGS=${@}
+
+    for arg in $ARGS
+    do
+        if [[ $arg == $FLAG* ]]; then
+            echo "Y"
+            return
+        fi
+    done
+
+    echo "N"
+}
+
+# TODO: DRY for argument parsing.
+
 init_header
 
 
@@ -42,11 +61,13 @@ DOWNLOADED=();
 BASEURL="$1";
 BASEDIR="$2";
 GITDIR=$(get_git_dir "$@")
+NO_REDIRECTS=$(get_no_redirects "$@")
 BASEGITDIR="$BASEDIR/$GITDIR/";
 
 if [ $# -lt 2 ]; then
-    echo -e "\033[33m[*] USAGE: http://target.tld/.git/ dest-dir [--git-dir=otherdir]\033[0m";
+    echo -e "\033[33m[*] USAGE: http://target.tld/.git/ dest-dir [--git-dir=otherdir] [--no-redirects]\033[0m";
     echo -e "\t\t--git-dir=otherdir\t\tChange the git folder name. Default: .git"
+    echo -e "\t\t--no-redirects\t\tDisable following redirects Default: Follow redirects"
     exit 1;
 fi
 
@@ -112,15 +133,26 @@ function download_item() {
     fi
 
     #Download file
-    curl -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36" -f -k -s "$url" -o "$target"
-    
+    if [ "$NO_REDIRECTS" == "Y" ]; then
+        curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36" -f -k -s "$url" -o "$target"
+    else
+        curl -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36" -f -k -s "$url" -o "$target"
+    fi
+
     #Mark as downloaded and remove it from the queue
     DOWNLOADED+=("$objname")
     if [ ! -f "$target" ]; then
         echo -e "\033[31m[-] Downloaded: $objname\033[0m"
         return
+    elif file "$target" | grep -q "HTML document"; then
+        rm "$target"
+        echo -e "\033[31m[-] Downloaded: $objname\033[0m"
+        return
+    else
+        echo -e "\033[32m[+] Downloaded: $objname\033[0m"
     fi
-    echo -e "\033[32m[+] Downloaded: $objname\033[0m"
+
+
 
     #Check if we have an object hash
     if [[ "$objname" =~ /[a-f0-9]{2}/[a-f0-9]{38} ]]; then 

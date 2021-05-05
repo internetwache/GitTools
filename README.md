@@ -127,6 +127,7 @@ http://username:password@proxy_url:proxy_port
 * bash
 * sed
 * binutils (strings)
+* file
 
 # License
 
