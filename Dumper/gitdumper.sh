@@ -106,8 +106,7 @@ function download_item() {
     local target="$BASEGITDIR$objname"
 
     #Create folder
-    dir=$(echo "$objname" | grep -oE "^(.*)/")
-    if [ $? -ne 1 ]; then
+    if dir=$(echo "$objname" | grep -oE "^(.*)/"); then
         mkdir -p "$BASEGITDIR/$dir"
     fi
 
@@ -132,8 +131,7 @@ function download_item() {
         hash=$(echo "$objname" | sed -e 's~objects~~g' | sed -e 's~/~~g')
         
         #Check if it's valid git object
-        type=$(git cat-file -t "$hash" 2> /dev/null)
-        if [ $? -ne 0 ]; then
+        if ! type=$(git cat-file -t "$hash" 2> /dev/null); then
             #Delete invalid file
             cd "$cwd"
             rm "$target"

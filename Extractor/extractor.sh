@@ -44,9 +44,8 @@ function traverse_tree() {
 		name=$(echo $leaf | awk '{$1=$2=$3=""; print substr($0,4)}') #grep -oP "^\d+\s+\w{4}\s+\w{40}\s+\K.*");
 		
         # Get the blob data
-		git cat-file -e $hash;
 		#Ignore invalid git objects (e.g. ones that are missing)
-		if [ $? -ne 0 ]; then
+		if ! git cat-file -e $hash; then
 			continue;
 		fi	
 		
