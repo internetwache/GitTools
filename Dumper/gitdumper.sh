@@ -73,15 +73,19 @@ function start_download() {
     QUEUE+=('index')
     QUEUE+=('packed-refs')
     QUEUE+=('refs/heads/master')
+    QUEUE+=('refs/heads/main')
     QUEUE+=('refs/remotes/origin/HEAD')
     QUEUE+=('refs/stash')
     QUEUE+=('logs/HEAD')
     QUEUE+=('logs/refs/heads/master')
+    QUEUE+=('logs/refs/heads/main')
     QUEUE+=('logs/refs/remotes/origin/HEAD')
     QUEUE+=('info/refs')
     QUEUE+=('info/exclude')
     QUEUE+=('/refs/wip/index/refs/heads/master')
+    QUEUE+=('/refs/wip/index/refs/heads/main')
     QUEUE+=('/refs/wip/wtree/refs/heads/master')
+    QUEUE+=('/refs/wip/wtree/refs/heads/main')
 
     #Iterate through QUEUE until there are no more files to download
     while [ ${#QUEUE[*]} -gt 0 ]
