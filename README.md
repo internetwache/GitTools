@@ -42,12 +42,11 @@ optional arguments:
 The input file should contain the targets one per line.
 The script will output discovered domains in the form of ```[*] Found: DOMAIN``` to stdout.
 
-#### Scanning Alexa’s Top 1M
+#### Scanning a Top 1M list
 
 ```
-wget http://s3.amazonaws.com/alexa-static/top-1m.csv.zip
-unzip top-1m.csv.zip
-sed -i.bak 's/.*,//' top-1m.csv
+wget -O top-1m.csv https://netapi.com/netapi_top1mln.csv
+sed -i.bak '1d;s/.*,//' top-1m.csv
 ./gitfinder.py -i top-1m.csv
 ```
 
